@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic>=2
+python-multipart
+faster-whisper
+lightgbm
+numpy
+pandas
+scikit-learn
+opencv-python-headless
+mediapipe
+weasyprint
+pypdf
+pytest
+httpx

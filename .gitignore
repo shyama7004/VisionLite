@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+data/
+*.pyc
+backend/app/static/
+backend/app/ml/models/*.txt
+frontend/public/mediapipe/
+frontend/public/models/face_landmarker.task
+test-results/
+playwright-report/
