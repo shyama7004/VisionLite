@@ -164,5 +164,5 @@ export function recommendRules(s: Partial<Session> & Record<string, any>): Recom
 export function formatRange(r: Range | null): string {
   if (!r) return ''
   const f = (n: number) => (n > 0 ? '+' : '') + n.toFixed(2)
-  return `${f(r.low)} / ${f(r.high)}`
+  return `${f(r.low)} ~ ${f(r.high)}`
 }
