@@ -91,7 +91,12 @@ export function DistanceGuard(props: { testName: string; targetMm: number; child
     }
 
     void start()
+    // Never get stuck: if the camera or model is not ready in 10 s, staff can use a tape instead.
+    const loadTimer = window.setTimeout(() => {
+      if (statusRef.current === 'loading') set('failed')
+    }, FAIL_AFTER_MS)
     return () => {
+      window.clearTimeout(loadTimer)
       stopped = true
       window.clearInterval(timer)
       landmarker?.close()

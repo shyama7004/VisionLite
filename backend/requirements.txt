@@ -3,6 +3,7 @@ uvicorn[standard]
 pydantic>=2
 python-multipart
 faster-whisper
+av>=14,<17
 lightgbm
 numpy
 pandas
