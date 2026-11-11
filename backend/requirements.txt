@@ -13,3 +13,6 @@ weasyprint
 pypdf
 pytest
 httpx
+jinja2
+playwright
+pypdfium2

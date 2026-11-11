@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<title>{{ t.report_title }}</title>
+<style>{{ css|safe }}</style>
+</head>
+<body>
+<header>
+  <h1>{{ t.report_title }}</h1>
+  <div class="meta">
+    <span>{{ t.report_date }}: {{ date }}</span>
+    {% if store %}<span>{{ t.report_store }}: {{ store }}</span>{% endif %}
+    {% if customer %}<span>{{ t.report_customer }}: {{ customer }}</span>{% endif %}
+  </div>
+</header>
+
+{% if rec.referral.level == "refer" %}
+<section class="banner refer">
+  <b>{{ t.res_refer }}</b>
+  <ul>{% for c in rec.referral.reasons %}<li>{{ codes[c] }}</li>{% endfor %}</ul>
+  {% if rec.referral.blocks_lens_advice %}<p>{{ t.res_block }}</p>{% endif %}
+</section>
+{% elif rec.referral.level == "advise" %}
+<section class="banner advise">
+  <b>{{ t.res_advise }}</b>
+  <ul>{% for c in rec.referral.reasons %}<li>{{ codes[c] }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+<section>
+  <h2>{{ t.res_eyes }}</h2>
+  <table>
+    <tr><th>{{ t.res_right }}</th><td>{{ eyes.right }}</td></tr>
+    <tr><th>{{ t.res_left }}</th><td>{{ eyes.left }}</td></tr>
+    <tr><th>{{ t.res_near }}</th><td>{{ eyes.near }}</td></tr>
+    <tr><th>{{ t.res_astig }}</th><td>{{ astig }}</td></tr>
+    <tr><th>{{ t.res_color }}</th><td>{{ color }}</td></tr>
+  </table>
+  {% if rec.astigmatism_hint %}<p class="note">{{ t.astig_note }}</p>{% endif %}
+  {% if rec.color_hint %}<p class="note">{{ t.color_note }}</p>{% endif %}
+</section>
+
+{% if not rec.referral.blocks_lens_advice %}
+<section>
+  <h2>{{ t.res_lens }}</h2>
+  <p class="lens">{{ lens_text }}</p>
+  {% if lens_reasons %}<ul>{% for r in lens_reasons %}<li>{{ r }}</li>{% endfor %}</ul>{% endif %}
+  {% if power_lines %}
+    <p><b>{{ t.res_power }}</b><br>{% for l in power_lines %}{{ l }}<br>{% endfor %}</p>
+    <p class="note">{{ t.res_power_note }}</p>
+  {% endif %}
+  <h3>{{ t.res_coatings }}</h3>
+  {% if coatings %}
+  <ul>{% for c in coatings %}<li>{{ c.name }}: {{ c.why }}{% if c.note %} <span class="note">({{ c.note }})</span>{% endif %}</li>{% endfor %}</ul>
+  {% else %}<p>{{ t.res_none }}</p>{% endif %}
+</section>
+{% endif %}
+
+{% if frame_line %}
+<section>
+  <h2>{{ t.res_frame }}</h2>
+  <p>{{ frame_line }}</p>
+</section>
+{% endif %}
+
+{% if skipped %}<p class="note">{{ t.res_skipped }}: {{ skipped }}</p>{% endif %}
+
+<footer>
+  <p class="disclaimer">{{ t.disclaimer_default }}</p>
+  <p class="vid">{{ t.res_visit_id }}: {{ visit_id }}</p>
+</footer>
+</body>
+</html>
