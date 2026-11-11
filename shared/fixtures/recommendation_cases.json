@@ -1,0 +1,109 @@
+{
+  "_note": "Expected values were worked out by hand from shared/rules.json. Both the Python and the TypeScript engines must match every case.",
+  "cases": [
+    { "name": "normal vision",
+      "input": { "interview": { "age": 25, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false }, "left": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "mild myopia young adult",
+      "input": { "interview": { "age": 22, "screen_hours": "2to5", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.3 }, "left": { "logmar": 0.3 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "SINGLE_VISION_DISTANCE" }, "coatings": [],
+        "power": { "right": { "low": -0.5, "high": -1.5 }, "left": { "low": -0.5, "high": -1.5 }, "add": null, "source": "rules" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "presbyopia at 50",
+      "input": { "interview": { "age": 50, "screen_hours": "2to5", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.4 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "SINGLE_VISION_NEAR" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": { "low": 1.75, "high": 2.25 }, "source": "rules" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "red flag diabetes",
+      "input": { "interview": { "age": 45, "screen_hours": "6to9", "night_driving_trouble": "yes", "last_eye_exam": "lt1", "red_flags": { "diabetes": true } },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "refer", "reasons": ["RED_FLAG_DIABETES"], "blocks_lens_advice": true }, "lens": { "type": "NONE_UNTIL_DOCTOR" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "big difference between eyes",
+      "input": { "interview": { "age": 30, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.3 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "refer", "reasons": ["EYE_DIFFERENCE_LARGE"], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "child age 6",
+      "input": { "interview": { "age": 6, "screen_hours": "2to5", "night_driving_trouble": "does_not_drive", "last_eye_exam": "never" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "refer", "reasons": ["AGE_TOO_YOUNG"], "blocks_lens_advice": true }, "lens": { "type": "NONE_UNTIL_DOCTOR" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "high screen time",
+      "input": { "interview": { "age": 30, "screen_hours": "6to9", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" },
+        "coatings": [ { "name": "anti_glare", "why": "screen_hours_6plus" }, { "name": "blue_light", "why": "screen_hours_6plus" } ],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "night driving trouble",
+      "input": { "interview": { "age": 35, "screen_hours": "2to5", "night_driving_trouble": "yes", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.2 }, "left": { "logmar": 0.2 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "SINGLE_VISION_DISTANCE" },
+        "coatings": [ { "name": "anti_glare", "why": "night_driving_trouble" } ],
+        "power": { "right": { "low": -0.5, "high": -1.5 }, "left": { "low": -0.5, "high": -1.5 }, "add": null, "source": "rules" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "both charts skipped",
+      "input": { "interview": { "age": 30, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": null, "left": null }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": ["chart"],
+        "lens_reasons_include": ["BOTH_CHARTS_SKIPPED"] } },
+
+    { "name": "distance and near problem at 55",
+      "input": { "interview": { "age": 55, "screen_hours": "2to5", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.4 }, "left": { "logmar": 0.4 } }, "near": { "logmar": 0.6 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "PROGRESSIVE_OR_BIFOCAL" }, "coatings": [],
+        "power": { "right": { "low": -1.0, "high": -2.0 }, "left": { "low": -1.0, "high": -2.0 }, "add": { "low": 2.25, "high": 2.75 }, "source": "rules" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "one eye very low blocks advice",
+      "input": { "interview": { "age": 40, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.7 }, "left": { "logmar": 0.2 } }, "near": { "logmar": 0.2 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "refer", "reasons": ["EYE_VERY_LOW", "EYE_DIFFERENCE_LARGE"], "blocks_lens_advice": true }, "lens": { "type": "NONE_UNTIL_DOCTOR" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "better eye low refers but still shows lens",
+      "input": { "interview": { "age": 40, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.5 }, "left": { "logmar": 0.6 } }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "refer", "reasons": ["BETTER_EYE_LOW"], "blocks_lens_advice": false }, "lens": { "type": "SINGLE_VISION_DISTANCE" }, "coatings": [],
+        "power": { "right": { "low": -1.0, "high": -2.0 }, "left": { "low": -1.75, "high": -2.75 }, "add": null, "source": "rules" }, "astigmatism_hint": false, "color_hint": false, "skipped": ["near"] } },
+
+    { "name": "exam overdue at 45 gives advice",
+      "input": { "interview": { "age": 45, "screen_hours": "2to5", "night_driving_trouble": "no", "last_eye_exam": "gt2" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.2 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "advise", "reasons": ["EXAM_OVERDUE"], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "two red flags",
+      "input": { "interview": { "age": 33, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1", "red_flags": { "sudden_vision_change": true, "eye_pain_or_redness": true } },
+        "tests": { "chart": { "right": { "logmar": 0.1 }, "left": { "logmar": 0.1 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "refer", "reasons": ["RED_FLAG_SUDDEN", "RED_FLAG_PAIN"], "blocks_lens_advice": true }, "lens": { "type": "NONE_UNTIL_DOCTOR" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "astigmatism and colour hints",
+      "input": { "interview": { "age": 28, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": true, "darkest_deg": 90 }, "left": { "unequal": false } }, "color": { "flag": true } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": true, "color_hint": true, "skipped": [] } },
+
+    { "name": "near only at 30 because near is much worse than distance",
+      "input": { "interview": { "age": 30, "screen_hours": "2to5", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.3 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "SINGLE_VISION_NEAR" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": { "low": 0.75, "high": 1.25 }, "source": "rules" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } },
+
+    { "name": "invalid colour test gives no hint",
+      "input": { "interview": { "age": 28, "screen_hours": "lt2", "night_driving_trouble": "no", "last_eye_exam": "lt1" },
+        "tests": { "chart": { "right": { "logmar": 0.0 }, "left": { "logmar": 0.0 } }, "near": { "logmar": 0.0 }, "astig": { "right": { "unequal": false } }, "color": { "flag": false, "invalid": true } } },
+      "expected": { "referral": { "level": "none", "reasons": [], "blocks_lens_advice": false }, "lens": { "type": "NO_CORRECTION_LIKELY" }, "coatings": [],
+        "power": { "right": null, "left": null, "add": null, "source": "none" }, "astigmatism_hint": false, "color_hint": false, "skipped": [] } }
+  ]
+}
